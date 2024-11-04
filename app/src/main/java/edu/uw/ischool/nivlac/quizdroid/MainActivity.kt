@@ -2,6 +2,7 @@ package edu.uw.ischool.nivlac.quizdroid
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.Toast
@@ -12,15 +13,9 @@ import androidx.core.view.WindowInsetsCompat
 import java.io.Serializable
 
 class MainActivity : AppCompatActivity() {
-    val TAG = MainActivity::class.java.name
-
-    val subjects = listOf("Math", "Physics", "Marvel Super Heroes", "Computer Science", "History",
-        "Video Games")
-    val desc = "This is a basic description of the subject that you are looking at: <insert desc>"
-    val numQuestions = 10
-    val exampleQuestion = Question("This is the question!", "This is answer 1!",
-        "This is answer 2!", "This is answer 3!", "This is answer 4!",
-        1)
+    val TAG = MainActivity::class.java.canonicalName
+    val topics = QuizApp()
+    val subjects = topics.topicsList
 
     lateinit var lstSubjects : ListView
 
@@ -31,16 +26,15 @@ class MainActivity : AppCompatActivity() {
 
         lstSubjects = findViewById(R.id.subjectList)
         val adapter = ArrayAdapter<String>(this,
-            android.R.layout.simple_list_item_1, android.R.id.text1, subjects)
+            android.R.layout.simple_list_item_1, android.R.id.text1, subjects.map {
+                it.title + " - " + it.shortDesc
+            })
         lstSubjects.adapter = adapter
 
         lstSubjects.setOnItemClickListener { parent, view, position, id ->
             val selected = subjects[position]
             val intent = Intent(this, Overview::class.java)
             intent.putExtra("topic", selected)
-            intent.putExtra("description", desc)
-            intent.putExtra("questions", numQuestions)
-            intent.putExtra("exampleQuestion", exampleQuestion as Serializable)
             startActivity(intent)
         }
 
@@ -51,12 +45,3 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
-
-data class Question(
-    val questionText: String,
-    val answer1: String,
-    val answer2: String,
-    val answer3: String,
-    val answer4: String,
-    val correctAnswer: Int
-) : Serializable

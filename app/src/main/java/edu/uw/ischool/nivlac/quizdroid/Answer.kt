@@ -18,12 +18,12 @@ class Answer : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_answer)
 
-        val currQuestion = intent.extras?.getInt("currQuestion")
+        val currQuestion = intent.extras?.getInt("currQuestionNum")
         val currCorrect = intent.extras?.getInt("correct")
-        val questions = intent.extras?.getInt("questions")
         val yourAnswer = intent.extras?.getString("yourAnswer")
         val correctAnswer = intent.extras?.getString("correctAnswer")
-        val exampleQuestion = intent.extras?.get("exampleQuestion") as Question
+        val currTopic = intent.extras?.get("topic") as Topic
+        val questions = currTopic.questions.size
         val finished = currQuestion == questions
         val yourAns = findViewById<TextView>(R.id.yourAnswer)
         val corrAns = findViewById<TextView>(R.id.correctAnswer)
@@ -48,8 +48,7 @@ class Answer : AppCompatActivity() {
                 if (currQuestion != null) {
                     intent.putExtra("currQuestion", currQuestion + 1)
                 }
-                intent.putExtra("questions", questions)
-                intent.putExtra("exampleQuestion", exampleQuestion as Serializable)
+                intent.putExtra("topic", currTopic as Serializable)
                 startActivity(intent)
             }
         }

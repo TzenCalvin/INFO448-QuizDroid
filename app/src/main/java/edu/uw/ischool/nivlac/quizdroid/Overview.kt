@@ -17,10 +17,10 @@ class Overview : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_overview)
 
-        val name = intent.extras?.getString("topic")
-        val description = intent.extras?.getString("description")
-        val questions = intent.extras?.getInt("questions")
-        val exampleQuestion = intent.extras?.get("exampleQuestion") as Question
+        val currTopic = intent.extras?.get("topic") as Topic
+        val name = currTopic.title
+        val description = currTopic.longDesc
+        val questions = currTopic.questions.size
         val topic = findViewById<TextView>(R.id.topicName)
         val desc = findViewById<TextView>(R.id.description)
         val total = findViewById<TextView>(R.id.questionTotal)
@@ -34,8 +34,7 @@ class Overview : AppCompatActivity() {
             val intent = Intent(this, Questions::class.java)
             intent.putExtra("correct", 0)
             intent.putExtra("currQuestion", 1)
-            intent.putExtra("questions", questions)
-            intent.putExtra("exampleQuestion", exampleQuestion as Serializable)
+            intent.putExtra("topic", currTopic as Serializable)
             startActivity(intent)
         }
 
