@@ -1,8 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.QuizDroid" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.QuizDroid" parent="Theme.AppCompat.DayNight">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">#8e58f0</item>  <!-- Action Bar color -->
+        <item name="colorPrimaryDark">#8e58f0</item>  <!-- Status bar color -->
+        <item name="colorAccent">@color/white</item>  <!-- Accent color -->
     </style>
 
     <style name="Theme.QuizDroid" parent="Base.Theme.QuizDroid" />

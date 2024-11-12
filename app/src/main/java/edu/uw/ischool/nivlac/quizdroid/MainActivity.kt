@@ -2,6 +2,9 @@ package edu.uw.ischool.nivlac.quizdroid
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import androidx.activity.enableEdgeToEdge
@@ -10,6 +13,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
 class MainActivity : AppCompatActivity() {
+    val TAG = MainActivity::class.java.canonicalName
     private val topics = QuizApp()
     private val subjects = topics.topicsList
 
@@ -38,6 +42,23 @@ class MainActivity : AppCompatActivity() {
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        Log.i(TAG, "Menu has been set!")
+        menuInflater.inflate(R.menu.preferences, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId) {
+            R.id.openPreferences -> {
+                val intent = Intent(this, Preferences::class.java)
+                startActivity(intent)
+                true
+            }
+            else -> return super.onOptionsItemSelected(item)
         }
     }
 }
