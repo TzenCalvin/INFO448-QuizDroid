@@ -19,7 +19,7 @@ class Overview : AppCompatActivity() {
 
         val currTopic = intent.extras?.get("topic") as Topic
         val name = currTopic.title
-        val description = currTopic.longDesc
+        val description = currTopic.desc
         val questions = currTopic.questions.size
         val topic = findViewById<TextView>(R.id.topicName)
         val desc = findViewById<TextView>(R.id.description)

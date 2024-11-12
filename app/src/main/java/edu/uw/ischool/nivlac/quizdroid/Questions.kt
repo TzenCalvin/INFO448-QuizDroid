@@ -26,7 +26,7 @@ class Questions : AppCompatActivity() {
         val currTopic = intent.extras?.get("topic") as Topic
         val currQuestion = currTopic.questions[currQuestionNum!! - 1]
         var yourAnswer = ""
-        var correctAnswer = ""
+        var answer = ""
         val question = findViewById<TextView>(R.id.question)
         val answerGroup = findViewById<RadioGroup>(R.id.answerGroup)
         val answer1 = findViewById<RadioButton>(R.id.answer1)
@@ -35,36 +35,36 @@ class Questions : AppCompatActivity() {
         val answer4 = findViewById<RadioButton>(R.id.answer4)
         val submitButton = findViewById<Button>(R.id.submitButton)
 
-        question.text = currQuestion.questionText
-        answer1.text = currQuestion.answer1
-        answer2.text = currQuestion.answer2
-        answer3.text = currQuestion.answer3
-        answer4.text = currQuestion.answer4
+        question.text = currQuestion.text
+        answer1.text = currQuestion.answers[0]
+        answer2.text = currQuestion.answers[1]
+        answer3.text = currQuestion.answers[2]
+        answer4.text = currQuestion.answers[3]
 
-        when (currQuestion.correctAnswer) {
-            1 -> correctAnswer = currQuestion.answer1
-            2 -> correctAnswer = currQuestion.answer2
-            3 -> correctAnswer = currQuestion.answer3
-            4 -> correctAnswer = currQuestion.answer4
+        when (currQuestion.answer) {
+            1 -> answer = currQuestion.answers[0]
+            2 -> answer = currQuestion.answers[1]
+            3 -> answer = currQuestion.answers[2]
+            4 -> answer = currQuestion.answers[3]
         }
 
         answerGroup.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
                 R.id.answer1 -> {
                     currAnswer = 1
-                    yourAnswer = currQuestion.answer1
+                    yourAnswer = currQuestion.answers[0]
                 }
                 R.id.answer2 -> {
                     currAnswer = 2
-                    yourAnswer = currQuestion.answer2
+                    yourAnswer = currQuestion.answers[1]
                 }
                 R.id.answer3 -> {
                     currAnswer = 3
-                    yourAnswer = currQuestion.answer3
+                    yourAnswer = currQuestion.answers[2]
                 }
                 R.id.answer4 -> {
                     currAnswer = 4
-                    yourAnswer = currQuestion.answer4
+                    yourAnswer = currQuestion.answers[3]
                 }
             }
 
@@ -72,14 +72,14 @@ class Questions : AppCompatActivity() {
         }
 
         submitButton.setOnClickListener {
-            if (currAnswer == currQuestion.correctAnswer) {
+            if (currAnswer == currQuestion.answer) {
                 currCorrect = currCorrect!! + 1
             }
             val intent = Intent(this, Answer::class.java)
             intent.putExtra("currQuestionNum", currQuestionNum)
             intent.putExtra("correct", currCorrect)
             intent.putExtra("yourAnswer", yourAnswer)
-            intent.putExtra("correctAnswer", correctAnswer)
+            intent.putExtra("answer", answer)
             intent.putExtra("topic", currTopic as Serializable)
             startActivity(intent)
         }

@@ -2,15 +2,12 @@ package edu.uw.ischool.nivlac.quizdroid
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.ListView
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import java.io.Serializable
 
 class MainActivity : AppCompatActivity() {
     val TAG = MainActivity::class.java.canonicalName
@@ -27,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         lstSubjects = findViewById(R.id.subjectList)
         val adapter = ArrayAdapter<String>(this,
             android.R.layout.simple_list_item_1, android.R.id.text1, subjects.map {
-                it.title + " - " + it.shortDesc
+                it.title + " - " + it.desc
             })
         lstSubjects.adapter = adapter
 

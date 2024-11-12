@@ -21,17 +21,17 @@ class Answer : AppCompatActivity() {
         val currQuestion = intent.extras?.getInt("currQuestionNum")
         val currCorrect = intent.extras?.getInt("correct")
         val yourAnswer = intent.extras?.getString("yourAnswer")
-        val correctAnswer = intent.extras?.getString("correctAnswer")
+        val answer = intent.extras?.getString("answer")
         val currTopic = intent.extras?.get("topic") as Topic
         val questions = currTopic.questions.size
         val finished = currQuestion == questions
         val yourAns = findViewById<TextView>(R.id.yourAnswer)
-        val corrAns = findViewById<TextView>(R.id.correctAnswer)
+        val corrAns = findViewById<TextView>(R.id.answer)
         val score = findViewById<TextView>(R.id.numCorrect)
         val nextButton = findViewById<Button>(R.id.nextButton)
 
         yourAns.text = "You chose: $yourAnswer"
-        corrAns.text = "The correct answer was: $correctAnswer"
+        corrAns.text = "The correct answer was: $answer"
         score.text = "You have $currCorrect out of $currQuestion correct!"
 
         if(finished) {

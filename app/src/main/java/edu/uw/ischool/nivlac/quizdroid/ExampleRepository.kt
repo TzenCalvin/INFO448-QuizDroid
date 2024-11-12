@@ -1,115 +1,50 @@
 package edu.uw.ischool.nivlac.quizdroid
 
+import org.json.JSONArray
+import java.io.IOException
+import java.io.InputStream
+
 class ExampleRepository : TopicRepository {
-    private val topics = listOf(
-        Topic(
-            title = "Math",
-            shortDesc = "This is a short description about math",
-            longDesc = "This is a long description about math.",
-            questions = mutableListOf(
-                Question(
-                    questionText = "This is question 1 about math!",
-                    answer1 = "This is answer 1! (correct)",
-                    answer2 = "This is answer 2!",
-                    answer3 = "This is answer 3!",
-                    answer4 = "This is answer 4!",
-                    correctAnswer = 1),
-                Question(
-                    questionText = "This is question 2 about math!",
-                    answer1 = "This is answer 1!",
-                    answer2 = "This is answer 2! (correct)",
-                    answer3 = "This is answer 3!",
-                    answer4 = "This is answer 4!",
-                    correctAnswer = 2),
-                Question(
-                    questionText = "This is question 3 about math!",
-                    answer1 = "This is answer 1!",
-                    answer2 = "This is answer 2!",
-                    answer3 = "This is answer 3! (correct)",
-                    answer4 = "This is answer 4!",
-                    correctAnswer = 3)
-            )
-        ),
-        Topic(
-            title = "Physics",
-            shortDesc = "This is a short description about physics",
-            longDesc = "This is a long description about physics.",
-            questions = mutableListOf(
-                Question(
-                    questionText = "This is question 1 about physics!",
-                    answer1 = "This is answer 1! (correct)",
-                    answer2 = "This is answer 2!",
-                    answer3 = "This is answer 3!",
-                    answer4 = "This is answer 4!",
-                    correctAnswer = 1),
-                Question(
-                    questionText = "This is question 2 about physics!",
-                    answer1 = "This is answer 1!",
-                    answer2 = "This is answer 2! (correct)",
-                    answer3 = "This is answer 3!",
-                    answer4 = "This is answer 4!",
-                    correctAnswer = 2),
-                Question(
-                    questionText = "This is question 3 about physics!",
-                    answer1 = "This is answer 1!",
-                    answer2 = "This is answer 2!",
-                    answer3 = "This is answer 3! (correct)",
-                    answer4 = "This is answer 4!",
-                    correctAnswer = 3),
-                Question(
-                    questionText = "This is question 4 about physics!",
-                    answer1 = "This is answer 1!",
-                    answer2 = "This is answer 2!",
-                    answer3 = "This is answer 3!",
-                    answer4 = "This is answer 4! (correct)",
-                    correctAnswer = 4)
-            )
-        ),
-        Topic(
-            title = "Marvel Super Heroes",
-            shortDesc = "This is a short description about heroes",
-            longDesc = "This is a long description about heroes.",
-            questions = mutableListOf(
-                Question(
-                    questionText = "This is question 1 about heroes!",
-                    answer1 = "This is answer 1! (correct)",
-                    answer2 = "This is answer 2!",
-                    answer3 = "This is answer 3!",
-                    answer4 = "This is answer 4!",
-                    correctAnswer = 1),
-                Question(
-                    questionText = "This is question 2 about heroes!",
-                    answer1 = "This is answer 1!",
-                    answer2 = "This is answer 2! (correct)",
-                    answer3 = "This is answer 3!",
-                    answer4 = "This is answer 4!",
-                    correctAnswer = 2),
-                Question(
-                    questionText = "This is question 3 about heroes!",
-                    answer1 = "This is answer 1!",
-                    answer2 = "This is answer 2!",
-                    answer3 = "This is answer 3! (correct)",
-                    answer4 = "This is answer 4!",
-                    correctAnswer = 3),
-                Question(
-                    questionText = "This is question 4 about heroes!",
-                    answer1 = "This is answer 1!",
-                    answer2 = "This is answer 2!",
-                    answer3 = "This is answer 3!",
-                    answer4 = "This is answer 4! (correct)",
-                    correctAnswer = 4),
-                Question(
-                    questionText = "This is question 5 about heroes!",
-                    answer1 = "This is answer 1! (correct)",
-                    answer2 = "This is answer 2!",
-                    answer3 = "This is answer 3!",
-                    answer4 = "This is answer 4!",
-                    correctAnswer = 1)
-            )
-        )
-    )
+    private var arrTopics = mutableListOf<Topic>()
+
+    private fun readJSON() {
+        try {
+            val inputStream: InputStream = QuizApp.appContext.assets.open("questions.json")
+            val json = inputStream.bufferedReader().use{it.readText()}
+
+            val data = JSONArray(json)
+
+            for (i in 0..<data.length()) {
+                val dataTopic = data.getJSONObject(i)
+                val title = dataTopic.getString("title")
+                val desc = dataTopic.getString("desc")
+                val questions = dataTopic.getJSONArray("questions")
+                val questionList = mutableListOf<Question>()
+
+                for (j in 0..<questions.length()) {
+                    val dataQuestion = questions.getJSONObject(j)
+                    val questionText = dataQuestion.getString("text")
+                    val answer = dataQuestion.getString("answer")
+                    val answers = dataQuestion.getJSONArray("answers")
+                    val answerList = mutableListOf<String>()
+
+                    for (k in 0..<answers.length()) {
+                        answerList.add(answers[k].toString())
+                    }
+
+                    questionList.add(Question(questionText, answer.toInt(), answerList))
+                }
+
+                arrTopics.add(Topic(title, desc, questionList))
+            }
+
+        } catch (_: IOException) {
+
+        }
+    }
 
     override fun getTopics(): List<Topic> {
-        return topics
+        readJSON()
+        return arrTopics
     }
 }

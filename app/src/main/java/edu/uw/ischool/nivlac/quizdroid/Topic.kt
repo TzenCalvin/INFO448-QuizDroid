@@ -4,7 +4,6 @@ import java.io.Serializable
 
 data class Topic(
     val title: String,
-    val shortDesc: String,
-    val longDesc: String,
+    val desc: String,
     val questions: List<Question>
 ) : Serializable
