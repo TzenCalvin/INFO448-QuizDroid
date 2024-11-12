@@ -10,9 +10,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
 class MainActivity : AppCompatActivity() {
-    val TAG = MainActivity::class.java.canonicalName
-    val topics = QuizApp()
-    val subjects = topics.topicsList
+    private val topics = QuizApp()
+    private val subjects = topics.topicsList
 
     lateinit var lstSubjects : ListView
 
