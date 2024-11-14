@@ -1,16 +1,21 @@
 package edu.uw.ischool.nivlac.quizdroid
 
+import android.util.Log
 import org.json.JSONArray
+import java.io.FileInputStream
 import java.io.IOException
-import java.io.InputStream
+import java.io.InputStreamReader
 
 class ExampleRepository : TopicRepository {
+    val TAG = ExampleRepository::class.java.canonicalName
     private var arrTopics = mutableListOf<Topic>()
 
     private fun readJSON() {
         try {
-            val inputStream: InputStream = QuizApp.appContext.assets.open("questions.json")
-            val json = inputStream.bufferedReader().use{it.readText()}
+            val fileInputStream: FileInputStream = QuizApp.appContext.openFileInput("questions.json")
+            val inputStreamReader = InputStreamReader(fileInputStream)
+            val json = inputStreamReader.readText()
+            inputStreamReader.close()
 
             val data = JSONArray(json)
 
@@ -36,10 +41,12 @@ class ExampleRepository : TopicRepository {
                 }
 
                 arrTopics.add(Topic(title, desc, questionList))
+                Log.i(TAG, "JSON file found!.")
             }
 
-        } catch (_: IOException) {
-
+        } catch (e: IOException) {
+            e.printStackTrace()
+            Log.e(TAG, "Error reading JSON file.")
         }
     }
 
